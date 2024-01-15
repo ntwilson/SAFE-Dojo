@@ -39,6 +39,10 @@ Target.create "Azure" (fun _ ->
 
   deployment |> Deploy.execute "safe-dojo" Deploy.NoParameters |> ignore)
 
+Target.create "Build" (fun _ ->
+  run dotnet [ "build" ] serverPath
+  run dotnet [ "build" ] clientPath)
+
 Target.create "Run" (fun _ ->
   run dotnet [ "build" ] sharedPath
 
@@ -48,7 +52,10 @@ Target.create "Run" (fun _ ->
   ]
   |> runParallel)
 
-Target.create "Format" (fun _ -> run dotnet ["fantomas"; "."; "-r"] "src")
+Target.create "Format" (fun _ -> run dotnet [ "fantomas"; "."; "-r" ] "src")
+
+
+Target.create "Format-build" (fun _ -> run dotnet [ "fantomas"; "." ] "")
 
 open Fake.Core.TargetOperators
 
